@@ -18,10 +18,3 @@ def parse_images(query, api_key, cx):
     else:
         print("Failed to retrieve images.")
         return []
-
-# Replace 'YOUR_API_KEY' and 'YOUR_CX' with your actual Google Custom Search API key and custom search engine ID
-api_key = 'YOUR_API_KEY'
-cx = 'YOUR_CX'
-query = 'kitten'
-images = parse_images_custom_search(query, api_key, cx)
-print(images)
