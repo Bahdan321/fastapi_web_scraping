@@ -5,5 +5,5 @@ from fastapi import APIRouter
 movie_router = APIRouter()
 
 @movie_router.get("/movies")
-async def movie(year: int):
+async def get_movies_by_year(year: int):
     return parse_movies(year)
