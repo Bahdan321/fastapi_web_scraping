@@ -1,6 +1,6 @@
 import requests
 
-def parse_images_custom_search(query, api_key, cx):
+def parse_images(query, api_key, cx):
     url = 'https://www.googleapis.com/customsearch/v1'
     params = {
         'key': api_key,
