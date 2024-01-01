@@ -6,7 +6,7 @@ from routers import main_api_router
 
 
 app = FastAPI(
-    title="HTML page"
+    title="Parser"
 )
 
 app.include_router(main_api_router)
