@@ -1,29 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
 
+URL = "https://www.fontanka.ru/currency.html"
+HEADERS = {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:93.0) Gecko/20100101 Firefox/93.0", "accept": "*/*"}
+
 def parse_exchange_rates():
-    url = 'https://www.banki.ru/products/currency/'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-
-    # Получаем курсы валют
-    exchange_rates = soup.find_all('div', class_='currency-table__large-text')
-    
-    if len(exchange_rates) >= 3:  # Проверяем, что есть достаточно данных
-        usd_rate = exchange_rates[0].text.strip()  # курс рубля к доллару
-        eur_rate = exchange_rates[1].text.strip()  # курс рубля к евро
-        btc_rate = exchange_rates[2].text.strip()  # курс рубля к биткоину
-
-        return {
-            'usd': usd_rate,
-            'eur': eur_rate,
-            'btc': btc_rate
-        }
+    html = requests.get(URL, headers=HEADERS, params=None)
+    soup = BeautifulSoup(html.text, "html.parser")
+    if html.status_code == 200:
+        #items = soup.find_all("table", class_="J-af9")
+        items = soup.find_all("tbody", class_="J-agb")
+        rates = []
+        for i in items:
+            rates.append({
+                "str": i.find("td", class_="J-d3").get_text(),
+                "val": i.find("td", class_="J-agl").get_text()
+            })
+        return(rates)
     else:
-        return None  # В случае отсутствия данных возвращаем None
-
-rates = parse_exchange_rates()
-if rates:
-    print(rates)
-else:
-    print("Failed to retrieve exchange rates. Please check the source or try again later.")
+        return("Ошибка: " + str(html.status_code))

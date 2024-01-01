@@ -1,13 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
+import imdb
 
-def parse_movies(year):
-    url = f'https://www.imdb.com/search/title/?title_type=feature&release_date={year}-01-01,{year}-12-31'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    movie_titles = soup.find_all('h3', class_='lister-item-header')
-    movies = [title.text.strip() for title in movie_titles]
-    return movies
+def get_movies_for_year(year):
+    ia = imdb.IMDb()
+    movies = ia.get_movies(str(year))
+    movie_titles = [movie['title'] for movie in movies]
+    return movie_titles
 
-movies_2023 = parse_movies(2023)
+# Получаем список фильмов, выпущенных в 2023 году
+movies_2023 = get_movies_for_year(2023)
 print(movies_2023)
